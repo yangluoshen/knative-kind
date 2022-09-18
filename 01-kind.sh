@@ -2,11 +2,20 @@
 
 set -eo pipefail
 
+reg_name='kind-registry'
+reg_port='5001'
+if [ "$(docker inspect -f '{{.State.Running}}' "${reg_name}" 2>/dev/null || true)" != 'true' ]; then
+  docker run \
+    -d --restart=always -p "127.0.0.1:${reg_port}:5000" --name "${reg_name}" \
+    -v /mnt/registry:/var/lib/registry \
+    registry:2
+fi
+
 kindVersion=$(kind version);
-K8S_VERSION=${k8sVersion:-v1.23.4@sha256:0e34f0d0fd448aa2f2819cfd74e99fe5793a6e4938b328f657c8e3f81ee0dfb9}
+K8S_VERSION=${k8sVersion:-v1.24.0}
 KIND_BASE=${KIND_BASE:-kindest/node}
 CLUSTER_NAME=${KIND_CLUSTER_NAME:-knative}
-KIND_VERSION=${KIND_VERSION:-v0.12}
+KIND_VERSION=${KIND_VERSION:-v0.14}
 
 echo "KinD version is ${kindVersion}"
 if [[ ! $kindVersion =~ "${KIND_VERSION}." ]]; then
@@ -35,6 +44,7 @@ elif [ "$REPLY" == "N" ] || [ "$REPLY" == "n" ] || [ -z "$REPLY" ]; then
 fi
 
 echo "Using image ${KIND_BASE}:${K8S_VERSION}"
+# create a cluster with the local registry enabled in containerd
 KIND_CLUSTER=$(mktemp)
 cat <<EOF | kind create cluster --name ${CLUSTER_NAME} --wait 120s --config=-
 kind: Cluster
@@ -46,4 +56,27 @@ nodes:
   - containerPort: 31080 # expose port 31380 of the node to port 80 on the host, later to be use by kourier or contour ingress
     listenAddress: 127.0.0.1
     hostPort: 80
+containerdConfigPatches:
+- |-
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:${reg_port}"]
+    endpoint = ["http://${reg_name}:5000"]
+EOF
+
+# connect the registry to the cluster network if not already connected
+if [ "$(docker inspect -f="{{json .NetworkSettings.Networks.kind}}" "${reg_name}")" = 'null' ]; then
+  docker network connect "kind" "${reg_name}"
+fi
+
+# Document the local registry
+# https://github.com/kubernetes/enhancements/tree/master/keps/sig-cluster-lifecycle/generic/1755-communicating-a-local-registry
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-registry-hosting
+  namespace: kube-public
+data:
+  localRegistryHosting.v1: |
+    host: "localhost:${reg_port}"
+    help: "https://kind.sigs.k8s.io/docs/user/local-registry/"
 EOF
