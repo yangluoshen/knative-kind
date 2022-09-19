@@ -39,7 +39,7 @@ spec:
           # This is the Go import path for the binary that is containerized
           # and substituted here.
           # image: gcr.io/knative-releases/knative.dev/serving/cmd/default-domain:v1.7.1
-          image: localhost:5001/default-domain:v1.7.1
+          image: localhost:5000/default-domain:v1.7.1
           args: ["-magic-dns=sslip.io"]
           ports:
             - name: http

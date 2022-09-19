@@ -4381,7 +4381,7 @@ spec:
   # This is the Go import path for the binary that is containerized
   # and substituted here.
   # image: gcr.io/knative-releases/knative.dev/serving/cmd/queue:v1.7.1
-  image: localhost:5001/queue:v1.7.1
+  image: localhost:5000/queue:v1.7.1
 
 ---
 # Copyright 2018 The Knative Authors
@@ -4780,7 +4780,7 @@ data:
   # and substituted here.
   # TODO: switch to 'queue-sidecar-image' after 0.27
   # queueSidecarImage: gcr.io/knative-releases/knative.dev/serving/cmd/queue:v1.7.1
-  queueSidecarImage: localhost:5001/queue:v1.7.1
+  queueSidecarImage: localhost:5000/queue:v1.7.1
   _example: |-
     ################################
     #                              #
@@ -5813,7 +5813,7 @@ spec:
           # This is the Go import path for the binary that is containerized
           # and substituted here.
           # image: gcr.io/knative-releases/knative.dev/serving/cmd/activator:v1.7.1
-          image: localhost:5001/activator:v1.7.1
+          image: localhost:5000/activator:v1.7.1
           # The numbers are based on performance test results from
           # https://github.com/knative/serving/issues/1625#issuecomment-511930023
           resources:
@@ -5979,7 +5979,7 @@ spec:
           # This is the Go import path for the binary that is containerized
           # and substituted here.
           # image: gcr.io/knative-releases/knative.dev/serving/cmd/autoscaler:v1.7.1
-          image: localhost:5001/autoscaler:v1.7.1
+          image: localhost:5000/autoscaler:v1.7.1
           resources:
             requests:
               cpu: 100m
@@ -6114,7 +6114,7 @@ spec:
           # This is the Go import path for the binary that is containerized
           # and substituted here.
           # image: gcr.io/knative-releases/knative.dev/serving/cmd/controller:v1.7.1
-          image: localhost:5001/controller:v1.7.1
+          image: localhost:5000/controller:v1.7.1
           resources:
             requests:
               cpu: 100m
@@ -6227,7 +6227,7 @@ spec:
           # This is the Go import path for the binary that is containerized
           # and substituted here.
           # image: gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping:v1.7.1
-          image: localhost:5001/domain-mapping:v1.7.1
+          image: localhost:5000/domain-mapping:v1.7.1
           resources:
             requests:
               cpu: 30m
@@ -6316,7 +6316,7 @@ spec:
           # This is the Go import path for the binary that is containerized
           # and substituted here.
           # image: gcr.io/knative-releases/knative.dev/serving/cmd/domain-mapping-webhook:v1.7.1
-          image: localhost:5001/domain-mapping-webhook:v1.7.1
+          image: localhost:5000/domain-mapping-webhook:v1.7.1
           resources:
             requests:
               cpu: 100m
@@ -6514,7 +6514,7 @@ spec:
           # This is the Go import path for the binary that is containerized
           # and substituted here.
           # image: gcr.io/knative-releases/knative.dev/serving/cmd/webhook:v1.7.1
-          image: localhost:5001/webhook:v1.7.1
+          image: localhost:5000/webhook:v1.7.1
           resources:
             requests:
               cpu: 100m

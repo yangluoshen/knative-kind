@@ -317,7 +317,7 @@ spec:
         app: net-kourier-controller
     spec:
       containers:
-        - image: localhost:5001/kourier:v1.7.0
+        - image: localhost:5000/kourier:v1.7.0
           #image: gcr.io/knative-releases/knative.dev/net-kourier/cmd/kourier:v1.7.0
           name: controller
           env:

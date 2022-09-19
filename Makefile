@@ -1,6 +1,6 @@
 
 KIND_CLUSTER_KNATIVE=knative
-LOCAL_REGISTRY=localhost:5001
+LOCAL_REGISTRY=localhost:5000
 
 knative-serving: kind-create serving-create kourier-create
 uninstall-serving: uninstall-kourier uninstall-serving
