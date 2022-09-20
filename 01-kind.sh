@@ -12,7 +12,7 @@ if [ "$(docker inspect -f '{{.State.Running}}' "${reg_name}" 2>/dev/null || true
 fi
 
 kindVersion=$(kind version);
-K8S_VERSION=${k8sVersion:-v1.24.0}
+K8S_VERSION=${k8sVersion:-v1.25.0}
 KIND_BASE=${KIND_BASE:-kindest/node}
 CLUSTER_NAME=${KIND_CLUSTER_NAME:-knative}
 KIND_VERSION=${KIND_VERSION:-v0.14}
